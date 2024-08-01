@@ -1,0 +1,25 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "a starwars themed employee database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "employee-tracker"
+  },
+  "keywords": [
+    "database",
+    "sql",
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Jordan Reeve",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "pg": "^8.12.0"
+  }
+}
