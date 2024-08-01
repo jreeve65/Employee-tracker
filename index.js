@@ -1,7 +1,5 @@
 /*TO DOS =============================================
 1. Import the required packages 
-2. set up and test inquier prompts
-3 set up and test switch statements
 4 set up database schema and test queries via sql*/
 const inq = require('inquirer');
 init();
