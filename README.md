@@ -23,7 +23,7 @@ Intended to be used for enertainment and as a practice in manipulating sql datab
 Needs node js inquierer v 8.2.4 users will also need a postgres account as well as the pg module in a package json
 
 ## Credits
- Referenced  Edx instructional TA  Mary Elaniuses github (404 Pandas)  for a syntax reference on how to build the  console table and sql queries.
+ Referenced  Edx instructional TA  Mary Elaniuses github (404 Pandas)  for a syntax reference on how to build the  console table and sql queries. located in index.js
 
 ## Questions  
 Hi my name is Jordan Reeve for questions regarding this project or my other work you can reach me via:  
