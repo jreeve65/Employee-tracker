@@ -1,6 +1,5 @@
 /*TO DOS =============================================
-1. Import the required packages 
-4 set up database schema and test queries via sql*/
+make update employee role function*/
 const inq = require('inquirer');
 const dStarCrew = require("./db");
 init();
@@ -13,19 +12,19 @@ function runPrompts(){
         {
         type: "list",
         name: "choice",
-        message:"Pick an operation or select quit.",
+        message:"What is thy Bidding my Master.",
         choices: [
             {
-                name: "View All Employees",
+                name: "View All Agents",
                 value: "VIEW_EMPLOYEES",
             },
                         
             {
-                name: "Add Employee",
+                name: "Add Agent",
                 value: "ADD_EMPLOYEE",
             },
             {
-                name: "Update Employee Role",
+                name: "Update Agent Position",
                 value: "UPDATE_EMPLOYEE_ROLE",
             },
             {
@@ -71,7 +70,7 @@ function runPrompts(){
     }
 
     function viewEmployees(){
-        console.log("I am viewing my subjects");
+        console.log("Here is the Death Star's manifest.");
         dStarCrew.viewEmployees()
         .then(({rows}) => {
             let subjects = rows;
@@ -84,11 +83,11 @@ function runPrompts(){
         inq.prompt([
           {
             name: "first_name",
-            message: "What is the employee's First name?",
+            message: "What is the Agent's First name?",
           },
           {
             name: "last_name",
-            message: "What is the employee's Last name?",
+            message: "What is the Agent's Last name?",
           },
         ]).then((res) => {
           let firstName = res.first_name;
@@ -104,7 +103,7 @@ function runPrompts(){
             inq.prompt({
               type: "list",
               name: "roleId",
-              message: "What is the employee's position?",
+              message: "What is the Agent's position?",
               choices: roleOptions,
             }).then((res) => {
               let roleId = res.roleId;
@@ -123,7 +122,7 @@ function runPrompts(){
                 inq.prompt({
                   type: "list",
                   name: "managerId",
-                  message: "Who is the employee's manager?",
+                  message: "Who is the Agent's manager?",
                   choices: managerOptions,
                 })
                   .then((res) => {
@@ -147,10 +146,45 @@ function runPrompts(){
       }
     
     function updateEmployeeRole(){
-        console.log("updating employee role");
+        dStarCrew.viewEmployees().then(({rows})=>{
+            let employees = rows;
+            const employeeOptions = employees.map(({id, first_name, last_name})=>({
+                name: `${first_name} ${last_name}`,
+                value: id,
+            }));
+            inq.prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message:"Which Agent's position do you want to change?",
+                    choices: employeeOptions,
+                },
+            ]).then((res)=>{
+                let employeeId = res.employeeId;
+                dStarCrew.viewRoles().then(({rows})=>{
+                    let roles = rows;
+                    const roleOptions = roles.map(({id, title})=> ({
+                        name: title,
+                        value: id,
+                    }));
+                    inq.prompt([
+                        {
+                            type: 'list',
+                            name: 'roleId',
+                            message: 'What position do you want to assign the Agent ?',
+                            choices: roleOptions,
+                        },
+                    ])
+                    .then((res)=> dStarCrew.updateEmployeeRole(employeeId, res.roleId))
+                    .then(()=> console.log("Updated Agent's Role."))
+                    .then(()=> runPrompts());
+                })
+            })
+        })
+       
     }
     function viewRoles(){
-        console.log("viewing roles");
+        console.log("here are the positions");
         dStarCrew.viewRoles().then(({rows})=>{
             let positions = rows;
             console.log('\n');
@@ -159,7 +193,7 @@ function runPrompts(){
         .then(()=>runPrompts());
     }
     function viewDepartments(){
-        console.log("viewing Departments");
+        console.log("here are the Imperial Offices");
         dStarCrew.viewDepartments().then(({rows})=>{
             let departments = rows;
             console.log('\n');
