@@ -21,7 +21,12 @@ class DB {
     viewDepartments(){
         return this.query("SELECT department.id, department.department_name AS department FROM department;");
     }
+    addEmployee(employee){
+        const{first_name, last_name,role_id,manager_id}= employee;
     
+        return this.query("INSERT INTO employee(first_name,last_name,role_id,manager_id)VALUES($1, $2, $3, $4)",[first_name,last_name,role_id,manager_id]);
+    }
+
     
 }
 module.exports = new DB();

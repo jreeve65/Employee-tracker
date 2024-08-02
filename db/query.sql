@@ -4,3 +4,4 @@ SELECT employee.id, employee.first_name, employee.last_name, roles.title, depart
 SELECT roles.id, roles.title, department.department_name AS department, roles.salary FROM roles LEFT JOIN department ON department_id = department.id;
 --department query
 SELECT department.id, department.department_name AS department FROM department;
+INSERT INTO employee(first_name,last_name,role_id,manager_id)VALUES($1, $2, $3, $4)

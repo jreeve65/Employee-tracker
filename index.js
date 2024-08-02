@@ -80,9 +80,72 @@ function runPrompts(){
         })
         .then(()=> runPrompts());
     }
-    function addEmployee(){
-        console.log("adding employee");
-    }
+    function addEmployee() {
+        inq.prompt([
+          {
+            name: "first_name",
+            message: "What is the employee's First name?",
+          },
+          {
+            name: "last_name",
+            message: "What is the employee's Last name?",
+          },
+        ]).then((res) => {
+          let firstName = res.first_name;
+          let lastName = res.last_name;
+      
+          dStarCrew.viewRoles().then(({ rows }) => {
+            let roles = rows;
+            const roleOptions = roles.map(({ id, title }) => ({
+              name: title,
+              value: id,
+            }));
+      
+            inq.prompt({
+              type: "list",
+              name: "roleId",
+              message: "What is the employee's position?",
+              choices: roleOptions,
+            }).then((res) => {
+              let roleId = res.roleId;
+      
+              dStarCrew.viewEmployees().then(({ rows }) => {
+                let employees = rows;
+                const managerOptions = employees.map(
+                  ({ id, first_name, last_name }) => ({
+                    name: `${first_name} ${last_name}`,
+                    value: id,
+                  })
+                );
+      
+                managerOptions.unshift({ name: "None", value: null });
+      
+                inq.prompt({
+                  type: "list",
+                  name: "managerId",
+                  message: "Who is the employee's manager?",
+                  choices: managerOptions,
+                })
+                  .then((res) => {
+                    let employee = {
+                      manager_id: res.managerId,
+                      role_id: roleId,
+                      first_name: firstName,
+                      last_name: lastName,
+                    };
+      
+                    dStarCrew.addEmployee(employee);
+                  })
+                  .then(() =>
+                    console.log(`Loyal Agent ${firstName} ${lastName} has been added to the Death Star crew All hail the Emperor`)
+                  )
+                  .then(() => runPrompts());
+              });
+            });
+          });
+        });
+      }
+    
     function updateEmployeeRole(){
         console.log("updating employee role");
     }
@@ -105,7 +168,7 @@ function runPrompts(){
         .then(()=> runPrompts());
     }
     function quit(){
-        console.log("All to Easy");
+        console.log("All too Easy");
         process.exit();
     }
 
